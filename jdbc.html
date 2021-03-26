@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JDBC</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="techdoc.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <nav id="navigationbar">
+     	<header>JDBC</header>
+     	<ul>
+     		<a href="#Intro"><li> Intro</li></a>
+     		<a href="#pre"><li> Prerequisite</li></a>
+     		<a href="#Steps"><li> Steps</li></a>
+     		<a href="#RegisterDriver"><li> Register Driver</li></a>
+     		<a href="#Connection"><li> Connection Establishment</li></a>
+     		<a href="#CreatingStatement"><li> Creating Statement</li></a>
+     		<a href="#ExecutingStatement"><li> Executing Statement</li></a>
+     		<a href="#CloseConection"><li> Close Conection</li></a>
+            <a href="#Program"><li>Program</li></a>
+     	</ul>
+    </nav>
+    <main id="main-doc">
+    	<section class="main-section" id="Intro">
+    		<header>Intro</header>
+    		<article>
+    		 <h4>JDBC</h4>
+    		  <li>JDBC stands for Java Dtabase Connectivity.</li>
+    		  <li>JDBC helps us to connect java application with database.</li>
+    		  <li>It helps us to connect front end application to the back end database.</li>
+    		  <li>They are steps involved and will see how these steps are there and used to establish the connection.</li>
+              </article>
+        </section>
+        <section class="main-section" id="pre">
+    		<header>Prerequisite</header>
+    		 	<article>
+                    <li>Java jdk above 1.7 version</li>
+                    <li>Oracle 11g</li> 		  	
+    		  </article>
+        </section>
+        <section class="main-section" id="Steps">
+    		<header>Steps</header>
+    		  <article>
+    		  	<p>JDBC have following steps</p>
+    		  	<li>Registering the Driver</li>
+    		  	<li>Establishing the Connection</li>
+    		  	<li>Creating the statement</li>
+    		  	<li>Query Execution</li>
+                <li>Closing the Connection</li>
+                <img src="jdbc.jpg">
+    		  </article>
+        </section>
+        <section class="main-section" id="RegisterDriver">
+    		<header>Register Driver</header>
+    		  <article>
+    		  	<h4>Registering the driver is going to be done in two ways</h4>
+                <li>Using forName() method</li>
+                <code>
+                    public static void forName(String className)throws Exception
+                    Class.forName("oracle.jdbc.driver.OracleDriver");
+                </code>
+                <li>Using registerDriver() method</li>
+                <code>
+                    try 
+                    {
+                        Driver driver = new oracle.jdbc.driver.OracleDriver();
+                        DriverManager.registerDriver(driver);
+                    }
+                    catch(Exception exception) 
+                    {
+                        System.out.println("Failed to load Driver"+exception);
+                        System.exit(-1);
+                    }
+                </code>
+    		  </article>
+        </section>
+        <section class="main-section" id="Connection">
+    		<header>Connection Establishment</header>
+    		  <article>
+    		  	<p>Inorder to establish the connection,we use getConnection() method of the DriverManager class.</p>
+                <li>Syntax:-</li>
+                <code>
+                    public static Connection getConnection(String location,
+                                                           String userName,
+                                                           String Password); 
+                </code>
+                <li>Example:-</li>
+                <code>
+                    Connection connection;
+                    connection = DriverManager.getConnection(  
+                                                "jdbc:oracle:thin:@localhost:1521:xe",
+                                                "root","12345678");  
+                </code>
+    		  </article>
+        </section>
+        <section class="main-section" id="CreatingStatement">
+    		<header>Creating Statement</header>
+    		  <article>
+                <p>Inorder to create the statement will use createStatement().This createStatement() method is present in Connection interface.</p>
+                <li>
+                    Syntax:-
+                </li>
+                <code>
+                    public Statement createStatement()throws Exception
+                </code>
+                <li>
+                    Example:-
+                </li>
+                <code>
+                    Statement statement=connection.createStatement(); 
+                </code>
+                <p>Above are the steps to create statement.</p>
+    		  </article>
+        </section>
+        <section class="main-section" id="ExecutingStatement">
+    		<header>Executing Statement</header>
+    		  <article>
+                <p>
+                    Inorder to execute the statement will use the method executeQuery() this method will be present in the interface Statement.Based on the execution it outputs the table which will be stored in the ResultSet.
+                </p>
+                <li>Syntax:-</li>
+                <code>
+                    public ResultSet executeQuery(String sqlQuery);
+                </code>
+                <li>
+                    Example:-
+                </li>
+                <code>
+                    ResultSet resultSet=statement.executeQuery("select * from employee");  
+                    while(resultSet.next())
+                    {  
+                        System.out.println("Name:-"+resultSet.getString(1));  
+                    }  
+                </code>
+    		  </article>
+        </section>
+        <section class="main-section" id="CloseConection">
+    		<header>Close Conection</header>
+    		  <article>
+                <p>
+                Inorder to close the connection will use the close() method of the Connection interface.
+                </p>
+                <li>
+                    Syntax:-
+                </li>
+                <code>
+                    public void close()throws Exception
+                </code>
+                <li>
+                    Example:-
+                </li>
+                <code>
+                    connection.close();
+                </code>
+    		  </article>
+        </section>
+        <section class="main-section" id="Program">
+            <header>Program</header>
+              <article>
+                <p>Below mentioned is the code 
+                </p>
+                <li>Code:-</li>
+                <code>
+import java.sql.*;
+import java.util.*;
+
+class JDBCProgram 
+{
+    public static void main(String arguments[])throws Exception 
+    {
+        Driver driver = new oracle.jdbc.driver.OracleDriver();
+        DriverManager.registerDriver(driver);
+        Connection connection;
+        connection = DriverManager.getConnection(  
+                                                "jdbc:oracle:thin:@localhost:1521:xe",
+                                                "root","12345678");
+        Statement statement=connection.createStatement();
+        ResultSet resultSet=statement.executeQuery("select * from employee");  
+        while(resultSet.next())
+        {  
+            System.out.println("Name:-"+resultSet.getString(1));
+        }    
+    }
+}
+                </code>
+                <li>Execution:-</li>
+                <code>
+                    Compiling:- javac JDBCProgram.java
+                    Execution:- java JDBCProgram
+                </code>
+                <li>Output:-</li>
+                <code>
+                    Virendra Nath
+                    Subham Patil
+                    Aishwaya Rajesh
+                </code>
+              </article>
+        </section>
+    </main> 
+</body>
+</html>
+</html>
